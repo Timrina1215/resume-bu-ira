@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анкета — Resume by Ira</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,300&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background-color: #080808 !important;
+  color: #f5f2ee !important;
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Force dark everywhere */
+div, section, header, nav, article, main, aside, p, span, label, h1, h2, h3 {
+  color: inherit;
+}
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+@keyframes spin { to { transform:rotate(360deg); } }
+@keyframes shimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
+
+/* HEADER */
+#hdr {
+  background-color: rgba(8,8,8,.97) !important;
+  border-bottom: 1px solid #262626;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(16px);
+}
+#hdr-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f5f2ee !important;
+}
+#hdr-logo em { color: #c9a84c !important; font-style: italic; }
+#hdr-sub { font-size: 11px; color: #666260 !important; margin-left: auto; }
+
+/* HERO */
+#hero {
+  text-align: center;
+  padding: 44px 20px 32px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #080808 !important;
+}
+#hero-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #c9a84c !important;
+  margin-bottom: 14px;
+  display: block;
+}
+#hero-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px, 7vw, 38px);
+  font-weight: 700;
+  color: #f5f2ee !important;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+#hero-h em { color: #c9a84c !important; font-style: italic; font-weight: 300; }
+#hero-p { font-size: 14px; color: #b0aca8 !important; line-height: 1.75; }
+
+/* PROGRESS */
+#prog-wrap {
+  max-width: 600px;
+  margin: 0 auto 24px;
+  padding: 0 20px;
+  background-color: #080808 !important;
+}
+#prog-bar {
+  height: 2px;
+  background-color: #262626 !important;
+  border-radius: 2px;
+  overflow: hidden;
+}
+#prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c9a84c, #f0d080);
+  border-radius: 2px;
+  transition: width .4s ease;
+  width: 0%;
+}
+#prog-text {
+  font-size: 10px;
+  color: #666260 !important;
+  margin-top: 6px;
+  text-align: right;
+  letter-spacing: 1px;
+}
+
+/* FORM WRAP */
+#form-wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+  background-color: #080808 !important;
+}
+
+/* STEP */
+.step { display: none; }
+.step.active { display: block; animation: fadeIn .35s ease; }
+
+.step-num {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #c9a84c !important;
+  margin-bottom: 6px;
+}
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #f5f2ee !important;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.step-title em { color: #c9a84c !important; font-style: italic; font-weight: 300; }
+.step-desc { font-size: 13px; color: #b0aca8 !important; line-height: 1.65; margin-bottom: 24px; }
+
+/* FIELD */
+.field { margin-bottom: 18px; }
+.field > label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b0aca8 !important;
+  letter-spacing: .3px;
+  margin-bottom: 8px;
+}
+.req { color: #c9a84c !important; margin-left: 2px; }
+
+.field input, .field textarea {
+  width: 100%;
+  background-color: #161616 !important;
+  border: 1px solid #262626;
+  border-radius: 8px;
+  padding: 13px 16px;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  color: #f5f2ee !important;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field input::placeholder, .field textarea::placeholder { color: #444240 !important; }
+.field input:focus, .field textarea:focus {
+  border-color: #c9a84c;
+  box-shadow: 0 0 0 3px rgba(201,168,76,.12);
+}
+.field textarea { resize: none; min-height: 110px; line-height: 1.6; }
+
+.ferr {
+  font-size: 11px;
+  color: #f87171 !important;
+  margin-top: 5px;
+  display: none;
+}
+.has-error input, .has-error textarea { border-color: #f87171 !important; }
+.has-error .ferr { display: block; }
+
+/* OPTIONS */
+.options { display: flex; flex-direction: column; gap: 10px; }
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: #161616 !important;
+  border: 1px solid #262626;
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.opt:hover { border-color: rgba(201,168,76,.35); }
+.opt.sel { border-color: #c9a84c !important; background-color: rgba(201,168,76,.07) !important; }
+
+.opt-dot {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid #333;
+  flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s;
+}
+.opt.sel .opt-dot { border-color: #c9a84c; }
+.opt.sel .opt-dot::after {
+  content: ''; width: 8px; height: 8px;
+  border-radius: 50%; background-color: #c9a84c;
+}
+.opt-lbl { font-size: 13px; color: #f5f2ee !important; line-height: 1.45; }
+.opt-sub { font-size: 11px; color: #666260 !important; margin-top: 2px; }
+
+/* PRICE OPTS */
+.price-opts { display: flex; flex-direction: column; gap: 12px; }
+.price-opt {
+  background-color: #161616 !important;
+  border: 1px solid #262626;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: border-color .2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+.price-opt:hover { border-color: rgba(201,168,76,.35); }
+.price-opt.sel { border-color: #c9a84c !important; background-color: rgba(201,168,76,.07) !important; }
+.price-opt-name { font-size: 14px; font-weight: 700; color: #f5f2ee !important; }
+.price-opt-desc { font-size: 11px; color: #666260 !important; margin-top: 2px; }
+.price-opt-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 700;
+  color: #c9a84c !important;
+  white-space: nowrap;
+}
+.hot-badge {
+  font-size: 8px; font-weight: 800; letter-spacing: 1.5px;
+  background-color: #c9a84c !important; color: #080808 !important;
+  padding: 2px 7px; border-radius: 20px; margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* BUTTONS */
+.btn-row { display: flex; gap: 12px; margin-top: 28px; }
+.btn-next {
+  flex: 1;
+  background-color: #c9a84c !important;
+  color: #080808 !important;
+  font-size: 12px; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 15px; border-radius: 8px;
+  border: none; cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: background .2s, transform .15s;
+}
+.btn-next:hover { background-color: #f0d080 !important; transform: translateY(-1px); }
+.btn-next:active { transform: scale(.98); }
+.btn-back {
+  background-color: transparent !important;
+  border: 1px solid #262626;
+  color: #b0aca8 !important;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 15px 20px; border-radius: 8px;
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+  transition: border-color .2s, color .2s;
+}
+.btn-back:hover { border-color: #c9a84c; color: #c9a84c !important; }
+
+/* SUCCESS */
+#success {
+  display: none;
+  text-align: center;
+  padding: 50px 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+#success.show { display: block; animation: fadeIn .5s ease; }
+.success-icon { font-size: 54px; margin-bottom: 18px; }
+.success-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px; font-weight: 700;
+  color: #f5f2ee !important; margin-bottom: 12px;
+}
+.success-h em { color: #c9a84c !important; font-style: italic; font-weight: 300; }
+.success-p { font-size: 14px; color: #b0aca8 !important; line-height: 1.75; margin-bottom: 28px; }
+.success-p strong { color: #f5f2ee !important; font-weight: 700; }
+.success-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background-color: #c9a84c !important; color: #080808 !important;
+  font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px 28px; border-radius: 8px; text-decoration: none;
+}
+
+/* OVERLAY */
+#overlay {
+  display: none; position: fixed; inset: 0;
+  background-color: rgba(8,8,8,.88) !important;
+  z-index: 100; align-items: center; justify-content: center;
+  flex-direction: column; gap: 16px;
+  backdrop-filter: blur(8px);
+}
+#overlay.show { display: flex; }
+.spinner {
+  width: 38px; height: 38px;
+  border: 3px solid #262626; border-top-color: #c9a84c;
+  border-radius: 50%; animation: spin .8s linear infinite;
+}
+#overlay p { font-size: 13px; color: #b0aca8 !important; }
+
+/* Divider */
+.divider { height: 1px; background-color: #1a1a1a !important; margin: 20px 0; }
+</style>
+</head>
+<body style="background-color:#080808;">
+
+<!-- HEADER -->
+<div id="hdr">
+  <div id="hdr-logo">Resume <em>by Ira</em></div>
+  <div id="hdr-sub">Анкета клиента</div>
+</div>
+
+<!-- HERO -->
+<div id="hero" style="background-color:#080808;">
+  <span id="hero-tag">✦ Заказ резюме</span>
+  <h1 id="hero-h">Расскажи о себе —<br>создам <em>идеальное CV</em></h1>
+  <p id="hero-p">Займёт 3–5 минут. Чем подробнее — тем лучше результат.</p>
+</div>
+
+<!-- PROGRESS -->
+<div id="prog-wrap" style="background-color:#080808;">
+  <div id="prog-bar"><div id="prog-fill"></div></div>
+  <div id="prog-text">Шаг 1 из 5</div>
+</div>
+
+<!-- FORM -->
+<div id="form-wrap" style="background-color:#080808;">
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step1" style="background-color:#080808;">
+    <div class="step-num">Шаг 1 из 5</div>
+    <div class="step-title">Контакты</div>
+    <div class="step-desc">Как с тобой связаться после получения анкеты.</div>
+
+    <div class="field" id="f-name">
+      <label>Твоё имя <span class="req">*</span></label>
+      <input type="text" id="inp-name" placeholder="Например: Анна" autocomplete="given-name">
+      <div class="ferr">Пожалуйста, введи имя</div>
+    </div>
+    <div class="field" id="f-tg">
+      <label>Telegram или Instagram <span class="req">*</span></label>
+      <input type="text" id="inp-tg" placeholder="@username">
+      <div class="ferr">Укажи контакт для связи</div>
+    </div>
+    <div class="field">
+      <label>Email (необязательно)</label>
+      <input type="email" id="inp-email" placeholder="your@email.com" autocomplete="email">
+    </div>
+    <div class="btn-row">
+      <button class="btn-next" onclick="go(1)">Дальше →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step2" style="background-color:#080808;">
+    <div class="step-num">Шаг 2 из 5</div>
+    <div class="step-title">Пакет и <em>рынок</em></div>
+    <div class="step-desc">Выбери пакет и рынок для которого нужно резюме.</div>
+
+    <div class="field" id="f-pkg">
+      <label>Пакет <span class="req">*</span></label>
+      <div class="price-opts">
+        <div class="price-opt" onclick="pick(this,'pkg','basic')">
+          <div><div class="price-opt-name">Basic</div><div class="price-opt-desc">1 страница · PDF · 2 правки · 48 часов</div></div>
+          <div class="price-opt-val">$35</div>
+        </div>
+        <div class="price-opt" onclick="pick(this,'pkg','standard')">
+          <div><div class="price-opt-name">Standard <span class="hot-badge">ХИТ</span></div><div class="price-opt-desc">Резюме + Cover Letter + ATS · 36 часов</div></div>
+          <div class="price-opt-val">$65</div>
+        </div>
+        <div class="price-opt" onclick="pick(this,'pkg','premium')">
+          <div><div class="price-opt-name">Premium</div><div class="price-opt-desc">Всё + LinkedIn · 24 часа · ∞ правок</div></div>
+          <div class="price-opt-val">$120</div>
+        </div>
+        <div class="price-opt" onclick="pick(this,'pkg','help')">
+          <div><div class="price-opt-name">Помоги выбрать</div><div class="price-opt-desc">Расскажу — вместе определимся</div></div>
+          <div class="price-opt-val" style="font-size:22px;">🤔</div>
+        </div>
+      </div>
+      <div class="ferr">Выбери пакет</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field" id="f-mkt">
+      <label>Рынок <span class="req">*</span></label>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'mkt','usa')"><div class="opt-dot"></div><div><div class="opt-lbl">🇺🇸 США / Канада</div></div></div>
+        <div class="opt" onclick="pick(this,'mkt','eu')"><div class="opt-dot"></div><div><div class="opt-lbl">🇪🇺 Европа</div><div class="opt-sub">Германия, Нидерланды, Швеция и др.</div></div></div>
+        <div class="opt" onclick="pick(this,'mkt','uk')"><div class="opt-dot"></div><div><div class="opt-lbl">🇬🇧 Великобритания</div></div></div>
+        <div class="opt" onclick="pick(this,'mkt','int')"><div class="opt-dot"></div><div><div class="opt-lbl">🌍 Международный</div></div></div>
+      </div>
+      <div class="ferr">Выбери рынок</div>
+    </div>
+
+    <div class="field" id="f-lng">
+      <label>Язык резюме <span class="req">*</span></label>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'lng','en')"><div class="opt-dot"></div><div class="opt-lbl">Английский</div></div>
+        <div class="opt" onclick="pick(this,'lng','ru')"><div class="opt-dot"></div><div class="opt-lbl">Русский</div></div>
+        <div class="opt" onclick="pick(this,'lng','both')"><div class="opt-dot"></div><div><div class="opt-lbl">Оба языка</div><div class="opt-sub">Два отдельных файла</div></div></div>
+      </div>
+      <div class="ferr">Выбери язык</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(2)">← Назад</button>
+      <button class="btn-next" onclick="go(2)">Дальше →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step3" style="background-color:#080808;">
+    <div class="step-num">Шаг 3 из 5</div>
+    <div class="step-title">Твой <em>профиль</em></div>
+    <div class="step-desc">Расскажи об опыте — это основа сильного резюме.</div>
+
+    <div class="field" id="f-pos">
+      <label>Профессия / должность <span class="req">*</span></label>
+      <input type="text" id="inp-pos" placeholder="Например: UX Designer, Sales Manager">
+      <div class="ferr">Укажи должность</div>
+    </div>
+
+    <div class="field" id="f-exp">
+      <label>Опыт работы <span class="req">*</span></label>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'exp','0')"><div class="opt-dot"></div><div class="opt-lbl">Нет опыта / студент</div></div>
+        <div class="opt" onclick="pick(this,'exp','1-2')"><div class="opt-dot"></div><div class="opt-lbl">До 2 лет</div></div>
+        <div class="opt" onclick="pick(this,'exp','2-5')"><div class="opt-dot"></div><div class="opt-lbl">2–5 лет</div></div>
+        <div class="opt" onclick="pick(this,'exp','5-10')"><div class="opt-dot"></div><div class="opt-lbl">5–10 лет</div></div>
+        <div class="opt" onclick="pick(this,'exp','10+')"><div class="opt-dot"></div><div class="opt-lbl">10+ лет</div></div>
+      </div>
+      <div class="ferr">Выбери опыт</div>
+    </div>
+
+    <div class="field" id="f-about">
+      <label>Опыт работы — кратко <span class="req">*</span></label>
+      <textarea id="inp-about" placeholder="Где работал(а), что делал(а). Можно скопировать из старого резюме."></textarea>
+      <div class="ferr">Расскажи об опыте</div>
+    </div>
+
+    <div class="field">
+      <label>Навыки и инструменты</label>
+      <input type="text" id="inp-skills" placeholder="Excel, Photoshop, B2B продажи, Python...">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(3)">← Назад</button>
+      <button class="btn-next" onclick="go(3)">Дальше →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step4" style="background-color:#080808;">
+    <div class="step-num">Шаг 4 из 5</div>
+    <div class="step-title">Образование и <em>достижения</em></div>
+    <div class="step-desc">Цифры и результаты — самое важное для сильного резюме.</div>
+
+    <div class="field" id="f-edu">
+      <label>Образование <span class="req">*</span></label>
+      <input type="text" id="inp-edu" placeholder="Вуз, специальность, год окончания">
+      <div class="ferr">Укажи образование</div>
+    </div>
+
+    <div class="field">
+      <label>Курсы, сертификаты</label>
+      <input type="text" id="inp-certs" placeholder="Название, платформа, год">
+    </div>
+
+    <div class="field">
+      <label>Достижения с цифрами 🏆</label>
+      <textarea id="inp-ach" placeholder="Например: увеличил(а) продажи на 30%, привлёк(ла) 50 клиентов...&#10;&#10;Нет цифр? Не переживай — помогу сформулировать!" style="min-height:130px;"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(4)">← Назад</button>
+      <button class="btn-next" onclick="go(4)">Дальше →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step5" style="background-color:#080808;">
+    <div class="step-num">Шаг 5 из 5</div>
+    <div class="step-title">Стиль и <em>сроки</em></div>
+    <div class="step-desc">Последний шаг — осталось немного! 🎉</div>
+
+    <div class="field">
+      <label>Стиль резюме</label>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'sty','dark')"><div class="opt-dot"></div><div><div class="opt-lbl">Тёмный / editorial</div><div class="opt-sub">Для дизайнеров, IT, креативных профессий</div></div></div>
+        <div class="opt" onclick="pick(this,'sty','light')"><div class="opt-dot"></div><div><div class="opt-lbl">Светлый / минималистичный</div></div></div>
+        <div class="opt" onclick="pick(this,'sty','corp')"><div class="opt-dot"></div><div><div class="opt-lbl">Корпоративный / строгий ATS</div></div></div>
+        <div class="opt" onclick="pick(this,'sty','soft')"><div class="opt-dot"></div><div><div class="opt-lbl">Нежный / женственный</div></div></div>
+        <div class="opt" onclick="pick(this,'sty','any')"><div class="opt-dot"></div><div class="opt-lbl">Доверяю тебе ✨</div></div>
+      </div>
+    </div>
+
+    <div class="field" id="f-ddl">
+      <label>Когда нужно? <span class="req">*</span></label>
+      <div class="options">
+        <div class="opt" onclick="pick(this,'ddl','urgent')"><div class="opt-dot"></div><div><div class="opt-lbl">🔥 Срочно — в течение 24 часов</div></div></div>
+        <div class="opt" onclick="pick(this,'ddl','soon')"><div class="opt-dot"></div><div class="opt-lbl">В течение 2–3 дней</div></div>
+        <div class="opt" onclick="pick(this,'ddl','week')"><div class="opt-dot"></div><div class="opt-lbl">В течение недели</div></div>
+        <div class="opt" onclick="pick(this,'ddl','chill')"><div class="opt-dot"></div><div class="opt-lbl">Не горит 😊</div></div>
+      </div>
+      <div class="ferr">Укажи сроки</div>
+    </div>
+
+    <div class="field">
+      <label>Ссылка на вакансию</label>
+      <input type="text" id="inp-vac" placeholder="Если есть — вставь ссылку">
+    </div>
+
+    <div class="field">
+      <label>Пожелания или вопросы</label>
+      <textarea id="inp-notes" placeholder="Особые требования, вопросы, пожелания..." style="min-height:90px;"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="back(5)">← Назад</button>
+      <button class="btn-next" onclick="submit()">Отправить ✈</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="success">
+    <div class="success-icon">🎉</div>
+    <h2 class="success-h">Анкета <em>получена!</em></h2>
+    <p class="success-p">Я уже изучаю твой профиль и свяжусь с тобой в <strong>@KocherovaCV</strong> в течение нескольких часов.</p>
+    <a href="https://t.me/KocherovaCV" class="success-btn">✈ Написать напрямую</a>
+  </div>
+
+</div>
+
+<!-- OVERLAY -->
+<div id="overlay">
+  <div class="spinner"></div>
+  <p>Отправляю анкету...</p>
+</div>
+
+<script>
+var BOT = '8899288016:AAGcVyzKqUg2FsDYi_d-x9p3Y1QaD0ZEo_o';
+var CID = '7769857834';
+var cur = 1;
+var d   = {};
+
+function pick(el, key, val) {
+  var parent = el.parentElement;
+  parent.querySelectorAll('.opt, .price-opt').forEach(function(o){ o.classList.remove('sel'); });
+  el.classList.add('sel');
+  d[key] = val;
+  var fld = el.closest('[id^="f-"]');
+  if (fld) fld.classList.remove('has-error');
+}
+
+function prog(n) {
+  document.getElementById('prog-fill').style.width = ((n-1)/5*100) + '%';
+  document.getElementById('prog-text').textContent = 'Шаг ' + n + ' из 5';
+}
+
+function collect(n) {
+  if (n===1){ d.name=v('inp-name'); d.tg=v('inp-tg'); d.email=v('inp-email'); }
+  if (n===3){ d.pos=v('inp-pos'); d.about=v('inp-about'); d.skills=v('inp-skills'); }
+  if (n===4){ d.edu=v('inp-edu'); d.certs=v('inp-certs'); d.ach=v('inp-ach'); }
+  if (n===5){ d.vac=v('inp-vac'); d.notes=v('inp-notes'); }
+}
+
+function v(id){ return document.getElementById(id).value.trim(); }
+
+function valid(n) {
+  var ok = true;
+  function req(fid, val) {
+    if (!val) { document.getElementById(fid).classList.add('has-error'); ok=false; }
+    else document.getElementById(fid).classList.remove('has-error');
+  }
+  function reqSel(fid, key) {
+    if (!d[key]) { document.getElementById(fid).classList.add('has-error'); ok=false; }
+    else document.getElementById(fid).classList.remove('has-error');
+  }
+  if (n===1){ req('f-name',v('inp-name')); req('f-tg',v('inp-tg')); }
+  if (n===2){ reqSel('f-pkg','pkg'); reqSel('f-mkt','mkt'); reqSel('f-lng','lng'); }
+  if (n===3){ req('f-pos',v('inp-pos')); reqSel('f-exp','exp'); req('f-about',v('inp-about')); }
+  if (n===4){ req('f-edu',v('inp-edu')); }
+  if (n===5){ reqSel('f-ddl','ddl'); }
+  if (!ok) window.scrollTo({top:0,behavior:'smooth'});
+  return ok;
+}
+
+function go(n) {
+  if (!valid(n)) return;
+  collect(n);
+  document.getElementById('step'+n).classList.remove('active');
+  cur = n+1;
+  document.getElementById('step'+cur).classList.add('active');
+  prog(cur);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function back(n) {
+  document.getElementById('step'+n).classList.remove('active');
+  cur = n-1;
+  document.getElementById('step'+cur).classList.add('active');
+  prog(cur);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+var lbl = {
+  pkg: {basic:'Basic — $35', standard:'Standard — $65 ⭐', premium:'Premium — $120', help:'Помоги выбрать'},
+  mkt: {usa:'🇺🇸 США / Канада', eu:'🇪🇺 Европа', uk:'🇬🇧 Великобритания', int:'🌍 Международный'},
+  lng: {en:'Английский', ru:'Русский', both:'Оба языка'},
+  exp: {'0':'Нет опыта','1-2':'До 2 лет','2-5':'2–5 лет','5-10':'5–10 лет','10+':'10+ лет'},
+  sty: {dark:'Тёмный / editorial', light:'Светлый', corp:'Корпоративный', soft:'Нежный', any:'Доверяю дизайнеру'},
+  ddl: {urgent:'🔥 Срочно (24ч)', soon:'2–3 дня', week:'Неделя', chill:'Не горит'}
+};
+function L(k,v){ return (lbl[k]&&lbl[k][v]) ? lbl[k][v] : (v||'—'); }
+
+function or(v){ return v || '—'; }
+
+async function submit() {
+  if (!valid(5)) return;
+  collect(5);
+
+  document.getElementById('overlay').classList.add('show');
+
+  var msg = [
+    '📋 *НОВАЯ ЗАЯВКА — Resume by Ira*', '',
+    '👤 *Клиент*',
+    'Имя: ' + d.name,
+    'Контакт: ' + d.tg,
+    d.email ? 'Email: ' + d.email : '',
+    '',
+    '💼 *Заказ*',
+    'Пакет: ' + L('pkg', d.pkg),
+    'Рынок: '  + L('mkt', d.mkt),
+    'Язык: '   + L('lng', d.lng),
+    'Срок: '   + L('ddl', d.ddl),
+    '',
+    '🧑‍💻 *Профиль*',
+    'Должность: ' + or(d.pos),
+    'Опыт: ' + L('exp', d.exp),
+    '',
+    '📝 *Опыт работы*',
+    or(d.about),
+    '',
+    d.skills ? '🛠 *Навыки*\n' + d.skills : '',
+    '',
+    '🎓 *Образование*',
+    or(d.edu),
+    d.certs ? 'Курсы: ' + d.certs : '',
+    '',
+    d.ach ? '🏆 *Достижения*\n' + d.ach : '',
+    '',
+    d.sty ? '🎨 *Стиль*: ' + L('sty', d.sty) : '',
+    d.vac ? '🔗 *Вакансия*: ' + d.vac : '',
+    d.notes ? '💬 *Пожелания*:\n' + d.notes : '',
+  ].filter(function(l){ return l !== ''; }).join('\n');
+
+  try {
+    var res = await fetch('https://api.telegram.org/bot' + BOT + '/sendMessage', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ chat_id: CID, text: msg, parse_mode: 'Markdown' })
+    });
+    var json = await res.json();
+    document.getElementById('overlay').classList.remove('show');
+
+    if (json.ok) {
+      document.querySelectorAll('.step').forEach(function(s){ s.classList.remove('active'); });
+      document.getElementById('prog-wrap').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+      document.getElementById('success').classList.add('show');
+      window.scrollTo({top:0, behavior:'smooth'});
+    } else {
+      alert('Ошибка отправки. Напиши напрямую: @KocherovaCV\n\n' + JSON.stringify(json));
+    }
+  } catch(e) {
+    document.getElementById('overlay').classList.remove('show');
+    alert('Ошибка соединения. Напиши напрямую: @KocherovaCV');
+  }
+}
+
+prog(1);
+</script>
+</body>
+</html>
